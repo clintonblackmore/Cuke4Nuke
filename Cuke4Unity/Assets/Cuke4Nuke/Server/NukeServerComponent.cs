@@ -1,25 +1,25 @@
-﻿using System;
-using System.IO;
-using System.IO.IsolatedStorage;
+﻿using UnityEngine;
+using System;
+using System.Collections;
 
 using Cuke4Nuke.Core;
 
 namespace Cuke4Nuke.Server
 {
-    public class Program
-    {
-        [STAThread]
-        static void Main(string[] args)
+   public class NukeServerComponent : MonoBehaviour 
+   {
+        public Cuke4Nuke.Server.Options options;
+
+    	// Use this for initialization
+    	void Start () 
         {
-            
-            var options = new Options(args);
             var objectFactory = new ObjectFactory();
             var loader = new Loader(options.AssemblyPaths, objectFactory);
             var processor = new Processor(loader, objectFactory);
             var listener = new Listener(processor, options.Port);
-            log4net.Config.XmlConfigurator.Configure();
-
+ 
             new NukeServer(listener, options).Start();
-        }
+    	}
     }
+
 }

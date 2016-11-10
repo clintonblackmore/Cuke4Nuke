@@ -131,7 +131,7 @@ namespace Cuke4Nuke.Core
             writer.Flush();
         }
 
-        protected void Debug.Log(string message)
+        protected void Log(string message)
         {
             var handler = MessageLogged;
 

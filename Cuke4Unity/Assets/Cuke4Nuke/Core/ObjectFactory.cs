@@ -10,7 +10,7 @@ namespace Cuke4Nuke.Core
 {
     public class ObjectFactory
     {
-        private static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+        //private static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
         List<Type> _classes = new List<Type>();
         IKernel _kernel;

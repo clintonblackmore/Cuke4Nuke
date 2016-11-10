@@ -3,6 +3,7 @@ using System.IO;
 using System.Net;
 using System.Net.Sockets;
 using System.Threading;
+using UnityEngine;
 
 namespace Cuke4Nuke.Core
 {
@@ -31,7 +32,7 @@ namespace Cuke4Nuke.Core
         public virtual void Stop()
         {
             _stopping = true;
-            Log("Stopping.");
+            Debug.Log("Stopping.");
         }
 
         protected void Run()
@@ -63,7 +64,7 @@ namespace Cuke4Nuke.Core
             var listener = new TcpListener(endPoint);
 
             listener.Start(0);
-            Log("Listening on port " + _port);
+            Debug.Log("Listening on port " + _port);
 
             return listener;
         }
@@ -72,14 +73,14 @@ namespace Cuke4Nuke.Core
         {
             TcpClient client = null;
 
-            Log("Waiting for client to connect.");
+            Debug.Log("Waiting for client to connect.");
 
             while (!_stopping)
             {
                 if (listener.Pending())
                 {
                     client = listener.AcceptTcpClient();
-                    Log("Connected to client.");
+                    Debug.Log("Connected to client.");
                     break;
                 }
                 Thread.Sleep(100);
@@ -101,7 +102,7 @@ namespace Cuke4Nuke.Core
                     var request = GetRequest(reader);
                     if (request == null)
                     {
-                        Log("Client disconnected.");
+                        Debug.Log("Client disconnected.");
                         break;
                     }
 
@@ -111,26 +112,26 @@ namespace Cuke4Nuke.Core
             }
             catch (IOException x)
             {
-                Log("Exception: " + x.Message);
+                Debug.Log("Exception: " + x.Message);
             }
         }
 
         protected virtual string GetRequest(StreamReader reader)
         {
-            Log("Waiting for request.");
+            Debug.Log("Waiting for request.");
             var command = reader.ReadLine();
-            Log("Received request <" + command + ">.");
+            Debug.Log("Received request <" + command + ">.");
             return command;
         }
 
         void Write(string response, StreamWriter writer)
         {
-            Log("Responded with <" + response + ">.");
+            Debug.Log("Responded with <" + response + ">.");
             writer.WriteLine(response);
             writer.Flush();
         }
 
-        protected void Log(string message)
+        protected void Debug.Log(string message)
         {
             var handler = MessageLogged;
 

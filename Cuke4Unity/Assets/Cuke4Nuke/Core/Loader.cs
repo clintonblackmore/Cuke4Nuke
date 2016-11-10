@@ -6,7 +6,7 @@ namespace Cuke4Nuke.Core
 {
     public class Loader
     {
-        private static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+        //private static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
         readonly IEnumerable<string> _assemblyPaths;
         readonly ObjectFactory _objectFactory;

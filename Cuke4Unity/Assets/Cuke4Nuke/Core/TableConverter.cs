@@ -10,7 +10,7 @@ namespace Cuke4Nuke.Core
 {
     public class TableConverter : TypeConverter
     {
-        private static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+        //private static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
         public override bool CanConvertFrom(ITypeDescriptorContext context, Type sourceType)
         {

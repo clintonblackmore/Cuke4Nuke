@@ -5,9 +5,10 @@ using System.IO;
 using System.Reflection;
 using System.Text;
 using Cuke4Nuke.Framework;
-using log4net;
+//using log4net;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using UnityEngine;
 
 namespace Cuke4Nuke.Core
 {
@@ -18,7 +19,7 @@ namespace Cuke4Nuke.Core
 
     public class Processor : IProcessor
     {
-        private static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
+        //private static readonly ILog log = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
 
         private readonly Loader _loader;
         private readonly ObjectFactory _objectFactory;
@@ -71,7 +72,7 @@ namespace Cuke4Nuke.Core
             }
             catch (Exception x)
             {
-                log.Error("Unable to process request '" + request + "': " + x.Message);
+                Debug.LogError("Unable to process request '" + request + "': " + x.Message);
                 return FailResponse(x);
             }
         }

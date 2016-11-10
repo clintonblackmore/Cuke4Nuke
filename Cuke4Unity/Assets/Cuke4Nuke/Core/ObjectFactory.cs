@@ -1,6 +1,6 @@
-﻿using System;
+﻿using UnityEngine;
+using System;
 using System.Collections.Generic;
-using Castle.MicroKernel;
 using System.Reflection;
 
 namespace Cuke4Nuke.Core
@@ -10,10 +10,12 @@ namespace Cuke4Nuke.Core
         //private static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
         List<Type> _classes = new List<Type>();
-        IKernel _kernel;
+        //Dictionary<Type, String> map = new Dictionary<Type, String>();
 
         public void AddClass(Type type)
         {
+            Debug.LogFormat("AddClass called with type {0}", type);
+
             if (!_classes.Contains(type))
             {
                 _classes.Add(type);
@@ -29,29 +31,25 @@ namespace Cuke4Nuke.Core
 
         public void CreateObjects()
         {
-            _kernel = new DefaultKernel();
-            foreach (Type type in _classes)
-            {
-                _kernel.AddComponent(type.ToString(), type);
-            }
+        //    foreach (Type type in _classes)
+        //    {
+        //        map.Add(type, type.ToString());
+        //    }
         }
 
         public object GetObject(Type type)
         {
-            if (_kernel == null || !_kernel.HasComponent(type))
-            {
-                return null;
-            }
+        //    if (map.ContainsValue(type))
+        //    {
+        //        return map[type];
+        //    }
 
-            return _kernel[type];
+            return null;
         }
 
         public void DisposeObjects()
         {
-            if (_kernel != null)
-            {
-                _kernel.Dispose();
-            }
+        //    map.Clear();
         }
     }
 }

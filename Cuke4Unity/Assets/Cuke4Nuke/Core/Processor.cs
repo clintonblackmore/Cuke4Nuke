@@ -9,12 +9,38 @@ using Cuke4Nuke.Framework;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using UnityEngine;
+using System.Threading;
 
 namespace Cuke4Nuke.Core
 {
+
+    // Used to pass a single message at a time between threads
+    public class IntraThreadMessage
+    {
+        public AutoResetEvent DataAvailable { get; private set; }
+
+        private string _message;
+        public string Message 
+        {
+            get
+            {
+                return _message;
+            }
+            set 
+            {
+                _message = value;
+                DataAvailable.Set();
+            }
+        }
+    }
+
+
     public interface IProcessor
     {
-        string Process(string request);
+        //string Process(string request);
+
+        IntraThreadMessage request { get; set; }
+        IntraThreadMessage reply { get; set; }
     }
 
     public class Processor : IProcessor
@@ -37,6 +63,13 @@ namespace Cuke4Nuke.Core
         }
 
         #region IProcessor Members
+
+        #region IProcessor implementation
+
+        public IntraThreadMessage request { get; set; }
+        public IntraThreadMessage reply { get; set; }
+
+        #endregion
 
         public string Process(string request)
         {

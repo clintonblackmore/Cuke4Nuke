@@ -17,15 +17,17 @@ namespace Cuke4Nuke.Core
     // Used to pass a single message at a time between threads
     public class IntraThreadMessage
     {
-        public AutoResetEvent DataAvailable { get; private set; }
+        private AutoResetEvent _dataAvailable = new AutoResetEvent(false);
+        public AutoResetEvent DataAvailable 
+        { 
+            get { return _dataAvailable; }
+            private set { _dataAvailable = value; }
+        }
 
         private string _message;
         public string Message 
         {
-            get
-            {
-                return _message;
-            }
+            get { return _message; }
             set 
             {
                 _message = value;
@@ -37,10 +39,10 @@ namespace Cuke4Nuke.Core
 
     public interface IProcessor
     {
-        //string Process(string request);
+        string Process(string request);
 
-        IntraThreadMessage request { get; set; }
-        IntraThreadMessage reply { get; set; }
+        IntraThreadMessage request { get; }
+        IntraThreadMessage reply { get; }
     }
 
     public class Processor : IProcessor
@@ -66,8 +68,17 @@ namespace Cuke4Nuke.Core
 
         #region IProcessor implementation
 
-        public IntraThreadMessage request { get; set; }
-        public IntraThreadMessage reply { get; set; }
+        private IntraThreadMessage _request = new IntraThreadMessage();
+        public IntraThreadMessage request 
+        { 
+            get { return _request; } 
+        }
+
+        private IntraThreadMessage _reply = new IntraThreadMessage();
+        public IntraThreadMessage reply 
+        { 
+            get { return _reply; }
+        }
 
         #endregion
 

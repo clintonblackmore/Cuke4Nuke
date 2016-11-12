@@ -20,6 +20,7 @@ public class CucumberWireServer : MonoBehaviour
 
     public static ManualResetEvent awaitingConnection = new ManualResetEvent(false);
 
+    private IProcessor processor;
 
     // These are details about the client that is talking to our Wire service
     class WireClientState
@@ -42,16 +43,26 @@ public class CucumberWireServer : MonoBehaviour
     {
         var objectFactory = new ObjectFactory();
         var loader = new Loader(assemblyPaths, objectFactory);
-        var processor = new Processor(loader, objectFactory);
-        //var listener = new Listener(processor, port);
+        processor = new Processor(loader, objectFactory);
 
         Thread listeningThread = new Thread(StartListening);
         ListenerThreadData listenerThreadData = 
             new ListenerThreadData() { port = port, processor = processor };
         listeningThread.Start(listenerThreadData);
-
 	}
-	
+
+    void Update()
+    {
+        if (processor.request.DataAvailable.WaitOne(0))
+        {
+            Debug.Log("Got data");
+            string request = processor.request.Message;
+            string reply = processor.Process(request);
+            Debug.LogFormat("Q: {0}\nA: {1}", request.TrimEnd(), reply.TrimEnd());
+            processor.reply.Message = reply;
+        }
+    }
+
 
     // Listen for a client to connect
     public static void StartListening(object input)
@@ -123,18 +134,38 @@ public class CucumberWireServer : MonoBehaviour
 
         // Read data from the client socket. 
         int bytesRead = handler.EndReceive(ar);
+        Debug.LogFormat("Read {0} bytes", bytesRead);
 
-        if (bytesRead > 0) 
+        if (bytesRead == 0)
+        {
+            // We got no data; the client has disconnected.
+            Debug.Log("Client has disconnected");
+            // TODO
+        }
+        else
         {
             // Store the data received so far
             state.sb.Append(Encoding.UTF8.GetString(state.buffer, 0, bytesRead));
 
+            Debug.LogFormat("sb is {0}", state.sb);
+
             // We receive one request at a time, and it ends with a newline
-            // If we can read a full line of text, we have our request
-            string message = new StreamReader(state.sb.ToString()).ReadLine();
-            if (message != null)
+            string messageBuffer = state.sb.ToString();
+
+            // Line endings are: \n, \r, or \r\n
+            int newlinePos = messageBuffer.IndexOf("\n");
+            int carriageReturnPos = messageBuffer.IndexOf("\r");
+            int endOfStringPos = Mathf.Max(newlinePos, carriageReturnPos); 
+
+            if (endOfStringPos > -1)
             {
-                // Send a message to the other thread
+                // We have a full message
+                string message = messageBuffer.Substring(0, endOfStringPos + 1);
+                string restOfBuffer = messageBuffer.Substring(endOfStringPos + 1);
+                state.sb = new StringBuilder(restOfBuffer);
+
+                // Finally, send on the message for processing
+                Debug.LogFormat("Processing message: {0}", message);
                 state.processor.request.Message = message;
             }
         }
@@ -156,7 +187,7 @@ public class CucumberWireServer : MonoBehaviour
                 reply.DataAvailable.WaitOne();
                 byte[] byteData = Encoding.UTF8.GetBytes(reply.Message);
                 handler.BeginSend(byteData, 0, byteData.Length, 0,
-                    new AsyncCallback(SendCallback), handler);
+                    new AsyncCallback(SendCallback), state);
             }
         }
         catch (Exception e) 
@@ -169,11 +200,17 @@ public class CucumberWireServer : MonoBehaviour
     {
         try 
         {
-            Socket handler = (Socket)ar.AsyncState;
+            WireClientState state = ar.AsyncState as WireClientState;
+            Socket handler = state.workSocket;
 
             // Complete sending the data to the remote device.
             int bytesSent = handler.EndSend(ar);
             Debug.LogFormat("Sent {0} bytes to client.", bytesSent);
+
+            // Read the next thing the client sends to us
+            state.workSocket.BeginReceive(
+                state.buffer, 0, WireClientState.BufferSize, 0,
+                new AsyncCallback(ReadCallback), state);
         } 
         catch (Exception e) 
         {

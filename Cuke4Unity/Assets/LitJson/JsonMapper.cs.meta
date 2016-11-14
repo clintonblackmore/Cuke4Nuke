@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: c41e15e75f26342d5ac498b94b0a4e0e
+labels:
+- EnemyExporterForC10
+- EnemyExporterForC16
+timeCreated: 1473115398
+licenseType: Pro
+MonoImporter:
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Reflection;
+using UnityEngine;
 
 namespace Cuke4Nuke.Core
 {
@@ -22,6 +23,7 @@ namespace Cuke4Nuke.Core
 
             foreach (var assemblyPath in _assemblyPaths)
             {
+                Debug.Log(assemblyPath);
                 var assembly = Assembly.LoadFrom(assemblyPath);
                 foreach (var type in assembly.GetTypes())
                 {

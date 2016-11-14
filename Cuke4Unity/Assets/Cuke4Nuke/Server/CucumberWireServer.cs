@@ -1,4 +1,6 @@
-﻿using System;
+﻿#if DISABLED_FOR_NOW
+
+using System;
 using System.Collections;
 using System.IO;
 using System.Net;
@@ -218,3 +220,5 @@ public class CucumberWireServer : MonoBehaviour
         }
     }
 }
+
+#endif

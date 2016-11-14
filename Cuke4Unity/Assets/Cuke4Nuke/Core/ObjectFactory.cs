@@ -31,6 +31,7 @@ namespace Cuke4Nuke.Core
 
         public void CreateObjects()
         {
+            Debug.LogWarning("ObjectFactory.CreateObjects()");
         //    foreach (Type type in _classes)
         //    {
         //        map.Add(type, type.ToString());
@@ -39,7 +40,9 @@ namespace Cuke4Nuke.Core
 
         public object GetObject(Type type)
         {
-        //    if (map.ContainsValue(type))
+            Debug.LogWarning("ObjectFactory.GetObject()");
+
+                //    if (map.ContainsValue(type))
         //    {
         //        return map[type];
         //    }
@@ -49,6 +52,8 @@ namespace Cuke4Nuke.Core
 
         public void DisposeObjects()
         {
+            Debug.LogWarning("ObjectFactory.DisposeObjects()");
+
         //    map.Clear();
         }
     }

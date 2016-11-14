@@ -1,4 +1,7 @@
-﻿using System;
+﻿// As we aren't parsing options from the command line, these tests no longer apply
+#if STALE_TESTS
+
+using System;
 using System.IO;
 
 using Cuke4Nuke.Server;
@@ -7,6 +10,8 @@ using NUnit.Framework;
 
 namespace Cuke4Nuke.Specifications.Server
 {
+    
+
     [TestFixture]
     public class Options_Specification
     {
@@ -109,3 +114,5 @@ namespace Cuke4Nuke.Specifications.Server
         }
     }
 }
+
+#endif

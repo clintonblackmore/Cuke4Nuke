@@ -41,8 +41,8 @@ namespace Cuke4Nuke.Core
     {
         string Process(string request);
 
-        IntraThreadMessage request { get; }
-        IntraThreadMessage reply { get; }
+        //IntraThreadMessage request { get; }
+        //IntraThreadMessage reply { get; }
     }
 
     public class Processor : IProcessor

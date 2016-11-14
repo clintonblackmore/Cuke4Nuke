@@ -1,4 +1,8 @@
-﻿using System;
+﻿// The server isn't going to be a separate executable as in Cuke4Nuke
+// so we'll remove this test
+#if STALE_TEST
+
+using System;
 using System.Diagnostics;
 using System.Net.Sockets;
 
@@ -47,3 +51,5 @@ namespace Cuke4Nuke.Specifications.Server
         }
     }
 }
+
+#endif

@@ -24,6 +24,7 @@ namespace Cuke4Nuke.Specifications.Core
         {
             var method = Reflection.GetMethod(typeof(InvalidHooks), "Before1");
             var hook = new AfterHook(method);
+            Assert.That(hook, Is.Null);
         }
 
         public class ValidHooks

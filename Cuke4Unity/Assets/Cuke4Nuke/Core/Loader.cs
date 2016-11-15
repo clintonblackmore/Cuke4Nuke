@@ -1,6 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Reflection;
 using UnityEngine;
+using System;
+
 
 namespace Cuke4Nuke.Core
 {
@@ -8,47 +10,61 @@ namespace Cuke4Nuke.Core
     {
         //private static readonly log4net.ILog log = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
-        readonly IEnumerable<string> _assemblyPaths;
         readonly ObjectFactory _objectFactory;
 
-        public Loader(IEnumerable<string> assemblyPaths, ObjectFactory objectFactory)
+        public Loader(ObjectFactory objectFactory)
         {
-            _assemblyPaths = assemblyPaths;
             _objectFactory = objectFactory;
         }
 
         public virtual Repository Load()
         {
             var repository = new Repository();
-
-            foreach (var assemblyPath in _assemblyPaths)
+            
+            foreach (var assembly in AppDomain.CurrentDomain.GetAssemblies())
             {
-                Debug.Log(assemblyPath);
-                var assembly = Assembly.LoadFrom(assemblyPath);
-                foreach (var type in assembly.GetTypes())
+                if (IsDesiredAssembly(assembly))
                 {
-                    foreach (var method in type.GetMethods(StepDefinition.MethodFlags))
+                    foreach (var type in assembly.GetTypes())
                     {
-                        if (StepDefinition.IsValidMethod(method))
+                        foreach (var method in type.GetMethods(StepDefinition.MethodFlags))
                         {
-                            repository.StepDefinitions.Add(new StepDefinition(method));
-                            _objectFactory.AddClass(method.ReflectedType);
-                        }
-                        if (BeforeHook.IsValidMethod(method))
-                        {
-                            repository.BeforeHooks.Add(new BeforeHook(method));
-                            _objectFactory.AddClass(method.ReflectedType);
-                        }
-                        if (AfterHook.IsValidMethod(method))
-                        {
-                            repository.AfterHooks.Add(new AfterHook(method));
-                            _objectFactory.AddClass(method.ReflectedType);
+                            if (StepDefinition.IsValidMethod(method))
+                            {
+                                repository.StepDefinitions.Add(new StepDefinition(method));
+                                _objectFactory.AddClass(method.ReflectedType);
+                            }
+                            if (BeforeHook.IsValidMethod(method))
+                            {
+                                repository.BeforeHooks.Add(new BeforeHook(method));
+                                _objectFactory.AddClass(method.ReflectedType);
+                            }
+                            if (AfterHook.IsValidMethod(method))
+                            {
+                                repository.AfterHooks.Add(new AfterHook(method));
+                                _objectFactory.AddClass(method.ReflectedType);
+                            }
                         }
                     }
                 }
             }
 
             return repository;
+        }
+
+        public bool IsDesiredAssembly(Assembly assembly)
+        {
+            // Unity loads scores of assemblies;
+            // While testing this, it loaded 45 for this project!
+            
+            // The assemblies we don't care about have names like: 
+            // Boo.Lang.Parser, System.Xml.Linq, and Newtonsoft.Json
+
+            // Our code is in assemblies with names like this:
+            // Assembly-CSharp, Assembly-CSharp-Editor, Assembly-UnityScript
+            // depending on the language, and if it is editor-only code or not
+
+            return assembly.GetName().Name.StartsWith("Assembly-");
         }
     }
 }

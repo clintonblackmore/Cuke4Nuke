@@ -378,7 +378,7 @@ namespace Cuke4Nuke.Specifications.Core
             internal List<StepDefinition> StepDefinitions { get; private set; }
 
             public MockLoader(List<StepDefinition> stepDefinitions)
-                : base(null, null)
+                : base(null)
             {
                 StepDefinitions = stepDefinitions;
             }

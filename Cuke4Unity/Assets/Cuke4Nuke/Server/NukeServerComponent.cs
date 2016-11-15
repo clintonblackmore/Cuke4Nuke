@@ -14,7 +14,7 @@ namespace Cuke4Nuke.Server
     	void Start () 
         {
             var objectFactory = new ObjectFactory();
-            var loader = new Loader(options.AssemblyPaths, objectFactory);
+            var loader = new Loader(objectFactory);
             var processor = new Processor(loader, objectFactory);
             var listener = new Listener(processor, options.Port);
  

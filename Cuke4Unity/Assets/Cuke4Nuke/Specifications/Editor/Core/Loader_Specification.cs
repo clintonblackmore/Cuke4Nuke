@@ -23,21 +23,9 @@ namespace Cuke4Nuke.Specifications.Core
         }
 
         [Test]
-        public void Should_load_step_definitions_from_external_assembly_in_options()
+        public void Should_load_all_step_definitions_in_project()
         {
-            var assemblyPaths = new List<string>{"Cuke4Nuke.TestStepDefinitions.dll"};
-            var loader = new Loader(assemblyPaths, new ObjectFactory());
-
-            _stepDefinitions = loader.Load().StepDefinitions;
-
-            AssertAllMethodsLoaded(ExternalStepDefinitionClass);
-        }
-
-        [Test]
-        public void Should_load_step_definitions_from_multiple_assemblies_in_options()
-        {
-            var assemblyPaths = new List<string> { "Cuke4Nuke.TestStepDefinitions.dll", "Cuke4Nuke.Specifications.dll" };
-            var loader = new Loader(assemblyPaths, new ObjectFactory());
+            var loader = new Loader(new ObjectFactory());
 
             _stepDefinitions = loader.Load().StepDefinitions;
 

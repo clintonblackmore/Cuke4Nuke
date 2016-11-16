@@ -4,25 +4,24 @@ using System.ComponentModel;
 using NUnit.Framework;
 using Cuke4Nuke.Core;
 using Cuke4Nuke.Framework;
+using UnityEngine;
 
 namespace Cuke4Nuke.Specifications.Core
 {
     public class TableConverter_Specification
     {
-        [SetUp]
-        public void SetUp()
-        {
-            TypeConverterAttribute attr = new TypeConverterAttribute(typeof(TableConverter));
-            TypeDescriptor.AddAttributes(typeof(Table), new Attribute[] { attr });
-        }
-
         [Test]
         public void ShouldConvertFromString()
         {
             string serializedTable = "[[\"foo\",\"1\"],[\"bar\",\"2\"]]";
+            Table expectedTable = new Table();
+            expectedTable.Data.Add(new List<string>(new[] { "foo", "1" }));
+            expectedTable.Data.Add(new List<string>(new[] { "bar", "2" }));
+
             Assert.DoesNotThrow(delegate {                
                 TypeConverter converter = TypeDescriptor.GetConverter(typeof(Table));
                 Table table = (Table) converter.ConvertFromString(serializedTable);
+                Assert.That(table, Is.EqualTo(expectedTable));
             });
         }
 
@@ -120,7 +119,7 @@ namespace Cuke4Nuke.Specifications.Core
             string actualJsonString = converter.TableToJsonString(table);
             Assert.That(actualJsonString, Is.EqualTo(expectedJsonString));
         }
-        
+
         [Test]
         public void ShouldConvertToString()
         {

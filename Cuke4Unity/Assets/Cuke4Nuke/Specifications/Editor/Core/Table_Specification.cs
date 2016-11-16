@@ -223,5 +223,37 @@ namespace Cuke4Nuke.Specifications.Core
                 tbl.RowHashes();
             });
         }
+
+        [Test]
+        public void TwoTableObjectsWithTheSameDataShouldBeEqual()
+        {
+            Table table1 = new Table();
+            table1.Data.Add(new List<string>(new[] { "Mickey", "Mouse" }));
+            table1.Data.Add(new List<string>(new[] { "Donald", "Duck" }));
+
+            Table table2 = new Table();
+            table2.Data.Add(new List<string>(new[] { "Mickey", "Mouse" }));
+            table2.Data.Add(new List<string>(new[] { "Donald", "Duck" }));
+
+            Assert.That(table1, Is.EqualTo(table2));
+        }
+
+        [Test]
+        public void TwoEmptyTableObjectsShouldBeEqual()
+        {
+            Assert.That(new Table(), Is.EqualTo(new Table()));
+        }
+
+        [Test]
+        public void TwoTableObjectsWithDifferentDataShouldNotBeEqual()
+        {
+            Table table1 = new Table();
+            table1.Data.Add(new List<string>(new[] { "Mickey", "Mouse" }));
+
+            Table table2 = new Table();
+            table2.Data.Add(new List<string>(new[] { "Donald", "Duck" }));
+
+            Assert.That(table1, Is.Not.EqualTo(table2));
+        }
     }
 }

@@ -91,27 +91,40 @@ namespace Cuke4Nuke.Core
                 switch (command)
                 {
                     case "begin_scenario":
+                    {
                         _objectFactory.CreateObjects();
                         var scenarioTags = GetScenarioTags(requestObject);
                         _repository.BeforeHooks.ForEach(hook => hook.Invoke(_objectFactory, scenarioTags));
                         return SuccessResponse();
+                    }
                     case "end_scenario":
-                        _repository.AfterHooks.ForEach(hook => hook.Invoke(_objectFactory, GetScenarioTags(requestObject)));
+                    {
+                        var scenarioTags = GetScenarioTags(requestObject);
+                        _repository.AfterHooks.ForEach(hook => hook.Invoke(_objectFactory, scenarioTags));
                         _objectFactory.DisposeObjects();
                         return SuccessResponse();
+                    }
                     case "step_matches":
+                    {
                         var nameToMatch = ((JObject) requestObject[1])["name_to_match"].Value<string>();
                         return StepMatches(nameToMatch);
+                    }
                     case "snippet_text":
+                    {
                         var keyword = ((JObject) requestObject[1])["step_keyword"].Value<string>().Trim();
                         var stepName = ((JObject) requestObject[1])["step_name"].Value<string>();
                         var multilineArgClass = ((JObject) requestObject[1])["multiline_arg_class"].Value<string>();
                         return SnippetResponse(keyword, stepName, multilineArgClass);
+                    }
                     case "invoke":
+                    {
                         var jsonArgs = (JArray) ((JObject) requestObject[1])["args"];
                         return Invoke(requestObject[1]["id"].Value<string>(), ToStringArray(jsonArgs));
+                    }
                     default:
+                    {
                         return FailResponse("Invalid request '" + request + "'");
+                    }
                 }
             }
             catch (Exception x)

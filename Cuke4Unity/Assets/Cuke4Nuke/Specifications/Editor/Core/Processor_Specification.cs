@@ -107,7 +107,7 @@ namespace Cuke4Nuke.Specifications.Core
         {
             var response = _processor.Process(@"nonsense:{a}");
 
-            AssertFailResponse(response, "Unexpected character encountered while parsing value: n. Line 1, position 1.");
+            AssertFailResponse(response, "Unexpected character encountered while parsing value: n. Path '', line 0, position 0.");
         }
 
         [Test]

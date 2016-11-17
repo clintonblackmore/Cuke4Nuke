@@ -47,7 +47,7 @@ namespace Cuke4Nuke.Specifications.Core
         public void Constructor_should_throw_given_invalid_method()
         {
             var method = Reflection.GetMethod(typeof(InvalidHooks), "Before1");
-            var hook = new Hook(method);
+            /*var hook =*/ new Hook(method);
         }
 
         [Test]

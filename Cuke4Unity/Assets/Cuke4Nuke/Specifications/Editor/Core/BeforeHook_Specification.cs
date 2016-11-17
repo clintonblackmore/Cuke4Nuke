@@ -23,7 +23,7 @@ namespace Cuke4Nuke.Specifications.Core
         public void Should_not_load_After_method()
         {
             var method = Reflection.GetMethod(typeof(InvalidHooks), "After1");
-            var hook = new BeforeHook(method);
+            /*var hook =*/ new BeforeHook(method);
         }
 
         public class ValidHooks

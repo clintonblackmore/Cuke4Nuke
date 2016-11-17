@@ -3,6 +3,7 @@
 using Cuke4Nuke.Core;
 using Cuke4Nuke.Server;
 using Cuke4Nuke.Specifications.Core;
+using UnityEngine;
 
 using NUnit.Framework;
 
@@ -12,13 +13,13 @@ namespace Cuke4Nuke.Specifications.Server
     public class NukeServer_Specification
     {
         MockListener _listener;
-        StringWriter _outputWriter;
+        /*StringWriter _outputWriter;*/
 
         [SetUp]
         public void SetUp()
         {
             _listener = new MockListener();
-            _outputWriter = new StringWriter();
+            /*_outputWriter = new StringWriter();*/
         }
 
         [Test]

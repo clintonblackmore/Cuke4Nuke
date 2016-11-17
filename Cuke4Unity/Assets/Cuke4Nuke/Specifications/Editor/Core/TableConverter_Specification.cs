@@ -40,7 +40,7 @@ namespace Cuke4Nuke.Specifications.Core
             string serializedTable = "{\"foo\":\"bar\"}";
             TableConverter converter = new TableConverter();
             Assert.Throws<ArgumentException>(delegate {
-                Table table = converter.JsonToTable(serializedTable);
+                /*Table table =*/ converter.JsonToTable(serializedTable);
             });
         }
 
@@ -51,7 +51,7 @@ namespace Cuke4Nuke.Specifications.Core
             TableConverter converter = new TableConverter();
             Assert.Throws<ArgumentException>(delegate
             {
-                Table table = converter.JsonToTable(serializedTable);
+                /*Table table =*/ converter.JsonToTable(serializedTable);
             });
         }
 
@@ -63,7 +63,7 @@ namespace Cuke4Nuke.Specifications.Core
             //converter.JsonToTable(serializedTable);
             Assert.Throws<ArgumentException>(delegate
             {
-                Table table = converter.JsonToTable(serializedTable);
+                /*Table table =*/ converter.JsonToTable(serializedTable);
             });
         }
 

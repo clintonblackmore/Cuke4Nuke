@@ -11,6 +11,6 @@ namespace Cuke4Nuke.Server
         public static readonly int DefaultPort = 3901;
 
         public int Port = 3901;
-        public ICollection<string> AssemblyPaths { get; set; }
+        //public ICollection<string> AssemblyPaths { get; set; }
     }
 }

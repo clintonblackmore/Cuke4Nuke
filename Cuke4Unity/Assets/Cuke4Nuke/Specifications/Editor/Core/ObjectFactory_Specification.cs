@@ -30,7 +30,7 @@ namespace Cuke4Nuke.Specifications.Core
             ObjectFactory objectFactory = new ObjectFactory();
             objectFactory.AddClass(typeof(Dummy));
             objectFactory.CreateObjects();
-            Dummy dummy = (Dummy) objectFactory.GetObject(typeof(Dummy));
+            /*Dummy dummy = (Dummy)*/ objectFactory.GetObject(typeof(Dummy));
         }
 
         [Test]
@@ -79,7 +79,7 @@ namespace Cuke4Nuke.Specifications.Core
             ObjectFactory objectFactory = new ObjectFactory();
             objectFactory.AddClass(typeof(DummyBox));
             objectFactory.CreateObjects();
-            DummyBox dummyBox = (DummyBox)objectFactory.GetObject(typeof(DummyBox));
+            /*DummyBox dummyBox = (DummyBox)*/ objectFactory.GetObject(typeof(DummyBox));
         }
     }
 
@@ -95,6 +95,7 @@ namespace Cuke4Nuke.Specifications.Core
         public DummyBox(Dummy dummy)
         {
             _dummy = dummy;
+            _dummy.ToString();
         }
     }
 }

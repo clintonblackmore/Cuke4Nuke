@@ -30,7 +30,10 @@ namespace Cuke4Nuke.Specifications.Server
 
             Assert.That(_listener.HasMessageLoggedListeners());
             Assert.That(_listener.StartCalled);
-            Assert.That(_listener.StopCalled);
+            // Stop used to be called immediately on the async server,
+            // but this caused it to not receive or respond to requests.
+            // So, I've simplified this test to only check that start was called.
+            //Assert.That(_listener.StopCalled);    
         }
 
         class MockListener : Listener

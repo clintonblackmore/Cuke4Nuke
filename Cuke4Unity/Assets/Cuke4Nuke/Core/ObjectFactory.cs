@@ -18,7 +18,7 @@ namespace Cuke4Nuke.Core
 
         public void AddClass(Type type)
         {
-            Debug.LogFormat("AddClass called with type {0}", type);
+            //Debug.LogFormat("AddClass called with type {0}", type);
 
             if (!_classes.Contains(type))
             {

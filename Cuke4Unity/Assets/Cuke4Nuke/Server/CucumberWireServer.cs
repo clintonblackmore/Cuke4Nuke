@@ -1,4 +1,5 @@
-﻿#if DISABLED_FOR_NOW
+﻿
+#if DISABLED_FOR_NOW
 
 using System;
 using System.Collections;
@@ -15,14 +16,13 @@ using UnityEngine;
 // Much of this is based on "Asynchronous Server Socket Example"
 // https://msdn.microsoft.com/en-us/library/fx6588te(v=vs.110).aspx
 
-public class CucumberWireServer : MonoBehaviour 
+public class CucumberWireServer : MonoBehaviour, IProcessor
 {
     public int port = 3901;
-    public string[] assemblyPaths;
 
     public static ManualResetEvent awaitingConnection = new ManualResetEvent(false);
 
-    private IProcessor processor;
+    private IProcessor delegateProcessor;
 
     // These are details about the client that is talking to our Wire service
     class WireClientState
@@ -44,8 +44,9 @@ public class CucumberWireServer : MonoBehaviour
 	void Start() 
     {
         var objectFactory = new ObjectFactory();
-        var loader = new Loader(assemblyPaths, objectFactory);
-        processor = new Processor(loader, objectFactory);
+        var loader = new Loader(objectFactory);
+        delegateProcessor = new Processor(loader, objectFactory);
+        IProcessor processor = this;
 
         Thread listeningThread = new Thread(StartListening);
         ListenerThreadData listenerThreadData = 
@@ -53,15 +54,27 @@ public class CucumberWireServer : MonoBehaviour
         listeningThread.Start(listenerThreadData);
 	}
 
+    #region IProcessor implementation
+
+    public string Process(string request)
+    {
+        // This function is called on the networking thread
+        // We block and wait for the results
+        // And then return to the networking thread
+    }
+
+    #endregion
+
+
     void Update()
     {
-        if (processor.request.DataAvailable.WaitOne(0))
+        if (delegateProcessor.request.DataAvailable.WaitOne(0))
         {
             Debug.Log("Got data");
-            string request = processor.request.Message;
-            string reply = processor.Process(request);
+            string request = delegateProcessor.request.Message;
+            string reply = delegateProcessor.Process(request);
             Debug.LogFormat("Q: {0}\nA: {1}", request.TrimEnd(), reply.TrimEnd());
-            processor.reply.Message = reply;
+            delegateProcessor.reply.Message = reply;
         }
     }
 
@@ -219,6 +232,7 @@ public class CucumberWireServer : MonoBehaviour
             Debug.Log(e.ToString());
         }
     }
+
 }
 
 #endif

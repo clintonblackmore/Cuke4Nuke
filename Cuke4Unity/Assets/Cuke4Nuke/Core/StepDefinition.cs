@@ -5,6 +5,7 @@ using System.Text.RegularExpressions;
 
 using Cuke4Nuke.Framework;
 using System.ComponentModel;
+using UnityEngine;
 
 namespace Cuke4Nuke.Core
 {
@@ -25,7 +26,16 @@ namespace Cuke4Nuke.Core
             {
                 throw new ArgumentException("method " + method + " does not have a step definition attribute");
             }
-            _regex = new Regex(attributes[0].Pattern);
+            string pattern = attributes[0].Pattern;
+            if (string.IsNullOrEmpty(pattern))
+            {
+                _regex = null;
+            }
+            else
+            {
+                _regex = new Regex(pattern);
+            }
+            //Debug.LogWarningFormat("Regex for method \"{0}\" is \"{1}\"", method, _regex);
 
             Method = method;
 
@@ -89,6 +99,9 @@ namespace Cuke4Nuke.Core
 
         internal List<StepArgument> ArgumentsFrom(string stepName)
         {
+            // If it doesn't have a regular expression tag, ignore the step
+            if (_regex == null) return null;
+
             List<StepArgument> arguments = null;
             Match match = _regex.Match(stepName);
             if(match.Success)
@@ -100,6 +113,9 @@ namespace Cuke4Nuke.Core
                     arguments.Add(new StepArgument(group.Value, group.Index));
                 }
             }
+
+            //Debug.LogFormat("Does \"{0}\" match \"{1}\"? {2} {3}", stepName, _regex, match, match.Success);
+
             return arguments;
         }
     }

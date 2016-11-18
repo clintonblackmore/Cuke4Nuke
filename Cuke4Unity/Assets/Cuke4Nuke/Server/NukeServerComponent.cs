@@ -16,7 +16,7 @@ namespace Cuke4Nuke.Server
             var objectFactory = new ObjectFactory();
             var loader = new Loader(objectFactory);
             var processor = new Processor(loader, objectFactory);
-            var listener = new Listener(processor, options.Port);
+            var listener = new AsyncListener(processor, options.Port);
  
             new NukeServer(listener, options).Start();
     	}

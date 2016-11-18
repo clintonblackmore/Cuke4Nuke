@@ -29,15 +29,19 @@ namespace Cuke4Nuke.Server
             _listener.MessageLogged += listener_LogMessage;
             try
             {
+                Debug.Log("StartING");
                 _listener.Start();
+                Debug.Log("StartED");
             }
             catch (Exception ex)
             {
                 string message = "Unable to start listener. Exception:\n\n" + ex.Message;
                 Debug.LogError(message);
             }
+            /*
             finally
             {
+                Debug.Log("Finally");
                 try
                 {
                     _listener.Stop();
@@ -48,6 +52,7 @@ namespace Cuke4Nuke.Server
                     Debug.LogError(message);
                 }
             }
+            */
         }
 
         void ShowHelp()

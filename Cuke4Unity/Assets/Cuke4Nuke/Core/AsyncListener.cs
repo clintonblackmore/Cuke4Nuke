@@ -1,10 +1,9 @@
 ﻿using System.Threading;
+using UnityEngine;
 
-using Cuke4Nuke.Core;
-
-namespace Cuke4Nuke.Specifications.Core
+namespace Cuke4Nuke.Core
 {
-    internal class AsyncListener : Listener
+    public class AsyncListener : Listener
     {
         readonly Thread _thread;
 
@@ -19,7 +18,9 @@ namespace Cuke4Nuke.Specifications.Core
         public override void Start()
         {
             _thread.Start();
+            Debug.LogFormat("Waiting one, on thread {0}", Thread.CurrentThread.Name);
             Started.WaitOne();
+            Debug.Log("Waited one");
         }
 
         public override void Stop()

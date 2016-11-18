@@ -32,7 +32,7 @@ namespace Cuke4Nuke.Core
         public virtual void Stop()
         {
             _stopping = true;
-            Debug.Log("Stopping.");
+            Debug.LogFormat("Stopping, on thread {0}", Thread.CurrentThread.Name);
         }
 
         protected void Run()
@@ -73,7 +73,7 @@ namespace Cuke4Nuke.Core
         {
             TcpClient client = null;
 
-            Debug.Log("Waiting for client to connect.");
+            Debug.LogFormat("Waiting for client to connect, on thread {0}", Thread.CurrentThread.Name);
 
             while (!_stopping)
             {
@@ -120,13 +120,13 @@ namespace Cuke4Nuke.Core
         {
             Debug.Log("Waiting for request.");
             var command = reader.ReadLine();
-            Debug.Log("Received request <" + command + ">.");
+            Debug.Log("<color=blue>Received request <" + command + ">.</color>");
             return command;
         }
 
         void Write(string response, StreamWriter writer)
         {
-            Debug.Log("Responded with <" + response + ">.");
+            Debug.Log("<color=#00ff00ff>Responded with <" + response + ">.</color>");
             writer.WriteLine(response);
             writer.Flush();
         }

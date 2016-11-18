@@ -131,7 +131,7 @@ namespace Cuke4Nuke.Specifications.Core
         }
 
         public class ValidHooks
-        {
+        {/*
             [Before]
             private void Before1() { }
 
@@ -161,10 +161,12 @@ namespace Cuke4Nuke.Specifications.Core
             {
                 throw new Exception();
             }
+            */
         }
 
         public class InvalidHooks
         {
+        /*
             // has a parameter
             [Before]
             public void Before1(object arg) { }
@@ -175,6 +177,7 @@ namespace Cuke4Nuke.Specifications.Core
             // has a step definition attribute
             [Given("")]
             public void Before3() { }
+            */
         }
     }
 }

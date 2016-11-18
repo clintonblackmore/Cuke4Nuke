@@ -39,7 +39,7 @@ namespace Cuke4Nuke.Specifications.Server
             internal bool StopCalled;
 
             public MockListener()
-                : base(new Processor(new Loader(null), null), 0)
+                : base(new Processor(new Loader(new ObjectFactory()), null), 0)
             {
             }
 

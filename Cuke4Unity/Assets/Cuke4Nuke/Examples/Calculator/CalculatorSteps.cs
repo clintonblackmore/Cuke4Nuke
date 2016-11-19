@@ -1,7 +1,7 @@
 using System;
 using Calc;
 using Cuke4Nuke.Framework;
-using NUnit.Framework; // change to use UnityEngine.Assertions
+using FluentAssertions;
 
 namespace CalcFeatures
 {
@@ -37,10 +37,7 @@ namespace CalcFeatures
         [Then(@"^the result should be (.*) on the screen$")]
         public void CheckResult(double expected)
         {
-        // How do the integration tests do asserts?
-        // that might be our answer
-
-            Assert.That(_result, Is.EqualTo(expected));
+            _result.Should().BeApproximately(expected, 0.0001f);
         }
     }
 }

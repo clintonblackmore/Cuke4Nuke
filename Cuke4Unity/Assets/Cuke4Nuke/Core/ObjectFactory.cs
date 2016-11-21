@@ -18,8 +18,6 @@ namespace Cuke4Nuke.Core
 
         public void AddClass(Type type)
         {
-            //Debug.LogFormat("AddClass called with type {0}", type);
-
             if (!_classes.Contains(type))
             {
                 _classes.Add(type);
@@ -35,27 +33,19 @@ namespace Cuke4Nuke.Core
 
         public void CreateObjects()
         {
-            Debug.LogWarning("ObjectFactory.CreateObjects()");
             foreach (Type type in _classes)
             {
                 object instance = CreateObject(type, 0);
-                Debug.LogFormat("{0} -> ({1})", type, instance);
                 if (instance == null)
                 {
                     Debug.LogError("Couldn't create object");
                 }
                 map.Add(type, instance);
-                //ShowMappings();
             }
-            Debug.LogWarning("Done ObjectFactory.CreateObjects()");
-            //ShowMappings();
         }
 
         public object GetObject(Type type)
         {
-            Debug.Log("GetObject");
-
-            //ShowMappings();
             object instance = null;
 
             if (map.ContainsKey(type))
@@ -67,7 +57,7 @@ namespace Cuke4Nuke.Core
                 Debug.LogWarning("Type not in dict");
             }
 
-            Debug.LogFormat("ObjectFactory.GetObject({0}) returning ({1})", type, instance);
+            //Debug.LogFormat("ObjectFactory.GetObject({0}) returning ({1})", type, instance);
             if (instance == null)
             {
                 Debug.LogError("Instance is null");
@@ -77,8 +67,6 @@ namespace Cuke4Nuke.Core
 
         public void DisposeObjects()
         {
-            Debug.LogWarning("ObjectFactory.DisposeObjects()");
-
             map.Clear();
         }
 

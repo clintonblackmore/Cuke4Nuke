@@ -29,9 +29,7 @@ namespace Cuke4Nuke.Server
             _listener.MessageLogged += listener_LogMessage;
             try
             {
-                Debug.Log("StartING");
                 _listener.Start();
-                Debug.Log("StartED");
             }
             catch (Exception ex)
             {

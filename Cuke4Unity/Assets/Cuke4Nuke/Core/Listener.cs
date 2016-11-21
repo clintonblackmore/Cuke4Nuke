@@ -64,7 +64,7 @@ namespace Cuke4Nuke.Core
             var listener = new TcpListener(endPoint);
 
             listener.Start(0);
-            Debug.Log("Listening on port " + _port);
+            //Debug.Log("Listening on port " + _port);
 
             return listener;
         }
@@ -73,14 +73,14 @@ namespace Cuke4Nuke.Core
         {
             TcpClient client = null;
 
-            Debug.LogFormat("Waiting for client to connect, on thread {0}", Thread.CurrentThread.Name);
+            //Debug.LogFormat("Waiting for client to connect, on thread {0}", Thread.CurrentThread.Name);
 
             while (!_stopping)
             {
                 if (listener.Pending())
                 {
                     client = listener.AcceptTcpClient();
-                    Debug.Log("Connected to client.");
+                    //Debug.Log("Connected to client.");
                     break;
                 }
                 Thread.Sleep(100);
@@ -102,7 +102,7 @@ namespace Cuke4Nuke.Core
                     var request = GetRequest(reader);
                     if (request == null)
                     {
-                        Debug.Log("Client disconnected.");
+                        //Debug.Log("Client disconnected.");
                         break;
                     }
 
@@ -112,21 +112,21 @@ namespace Cuke4Nuke.Core
             }
             catch (IOException x)
             {
-                Debug.Log("Exception: " + x.Message);
+                Debug.LogWarning("Exception: " + x.Message);
             }
         }
 
         protected virtual string GetRequest(StreamReader reader)
         {
-            Debug.Log("Waiting for request.");
+            //Debug.Log("Waiting for request.");
             var command = reader.ReadLine();
-            Debug.Log("<color=blue>Received request <" + command + ">.</color>");
+            //Debug.Log("<color=blue>Received request <" + command + ">.</color>");
             return command;
         }
 
         void Write(string response, StreamWriter writer)
         {
-            Debug.Log("<color=#00ff00ff>Responded with <" + response + ">.</color>");
+            //Debug.Log("<color=#00ff00ff>Responded with <" + response + ">.</color>");
             writer.WriteLine(response);
             writer.Flush();
         }

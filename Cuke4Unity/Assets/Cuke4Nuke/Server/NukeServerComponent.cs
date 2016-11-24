@@ -13,49 +13,22 @@ namespace Cuke4Nuke.Server
    {
         public Cuke4Nuke.Server.Options options;
         public Text display;
-        NukeServer server;
-        int timesLoaded = 0;
 
     	// Use this for initialization
-    	void OnEnable() 
+    	void Start () 
         {
-            Debug.Log("OnEnable called");
-
             var objectFactory = new ObjectFactory();
             var loader = new Loader(objectFactory);
             var processor = new Processor(loader, objectFactory);
             var listener = new AsyncListener(processor, options.Port);
  
-            server = new NukeServer(listener);
-            server.Start();
+            new NukeServer(listener, options).Start();
 
             if (display != null)
             {
-                string timesCompiledMessage = "";
-                if (timesLoaded == 1)
-                {
-                    timesCompiledMessage = string.Format("Recompiled once");
-                } 
-                else if (timesLoaded > 1)
-                {
-                    timesCompiledMessage = string.Format("Recompiled {0} times", timesLoaded);
-                }
-
-                display.text = string.Format("Listening on port {0} at \n{1}\n\n{2}", options.Port, GetIPAddresses(), timesCompiledMessage);
+                display.text = string.Format("Listening on port {0} at \n{1}", options.Port, GetIPAddresses());
             }
-
-            timesLoaded++;
     	}
-
-        void OnDisable()
-        {
-            Debug.Log("OnDisable called");
-            server.Stop();
-            if (display != null)
-            {
-                display.text = string.Format("Server stopped.");
-            }
-        }
 
         private string GetIPAddresses()
         {
